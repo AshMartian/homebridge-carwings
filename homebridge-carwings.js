@@ -12,19 +12,24 @@ module.exports = function(homebridge) {
 
 var base64regex = /^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i;
 
+var email, password;
+function loginCarwings() {
+  carwings.loginSession(email, password).then(function(session){
+    carwingsSession = session;
+  });
+}
+
 function CarwingsAccessory(log, config) {
     this.log = log;
     this.config = config;
     this.name = config["name"];
-    this.email = config["email"];
-    this.password = config["password"];
-    if(base64regex.test(this.password)){
-      this.password = Buffer.from(this.password, 'base64');
+    email = config["email"];
+    password = config["password"];
+    if(base64regex.test(password)){
+      password = Buffer.from(password, 'base64');
     }
 
-    carwings.loginSession(this.email, this.password).then(function(session){
-      carwingsSession = session;
-    });
+    loginCarwings();
 
     this.battery = new Service.BatteryService(this.name);
 
@@ -59,6 +64,9 @@ function CarwingsAccessory(log, config) {
       setInterval(function(){
         carwings.batteryStatusCheckRequest(carwingsSession).then(function(checkStatus){
           console.log(checkStatus);
+          if(status.status == 401) {
+            loginCarwings();
+          }
         });
       }, 600000);
     }
@@ -69,6 +77,10 @@ CarwingsAccessory.prototype.getLevel = function(callback) {
   var _this = this;
   carwings.batteryRecords(carwingsSession).then(function(status){
     console.log(status);
+    if(status.status == 401) {
+      loginCarwings();
+    }
+    carwings.batteryStatusCheckRequest(carwingsSession);
     /*_this.battery.getCharacteristic(Characteristic.BatteryLevel).setProp({
       maxValue: status.BatteryStatusRecords.BatteryStatus.BatteryCapacity
     });*/
@@ -80,6 +92,9 @@ CarwingsAccessory.prototype.getLevel = function(callback) {
 CarwingsAccessory.prototype.getCharging = function(callback) {
   carwings.batteryRecords(carwingsSession).then(function(status){
     console.log(status);
+    if(status.status == 401) {
+      loginCarwings();
+    }
     callback(null, status.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus.indexOf("CHARGING") !== -1);
   });
 }
@@ -88,6 +103,9 @@ CarwingsAccessory.prototype.getHVAC = function(callback) {
   console.log(this);
   carwings.hvacStatus(carwingsSession).then(function(status){
     console.log(status);
+    if(status.status == 401) {
+      loginCarwings();
+    }
     callback(null, status.RemoteACRecords.RemoteACOperation !== 'STOP');
   });
 };
@@ -96,11 +114,17 @@ CarwingsAccessory.prototype.setHVAC = function(on, callback) {
   if(on) {
     carwings.hvacOn(carwingsSession).then(function(status){
       console.log(status);
+      if(status.status == 401) {
+        loginCarwings();
+      }
       callback(null, true);
     });
   } else {
     carwings.hvacOff(carwingsSession).then(function(status){
       console.log(status);
+      if(status.status == 401) {
+        loginCarwings();
+      }
       callback(null, false);
     });
   }
