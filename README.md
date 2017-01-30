@@ -27,7 +27,7 @@ The plugin registers itself as `Carwings`. You have the following options:
 Email is the email associated with your Nissan Carwings account.
 Password can be plan text (not recommended), or a base64 string of your password.
 
-**Warning: Update Interval may spam your phone with charge notifications from the Nissan App. You may want to turn these notifications off or set updateInterval to "never". This is currently experimental.
+**Warning: Update Interval may spam your phone with charge notifications from the Nissan App.** You may want to turn these notifications off or set updateInterval to "never". This is currently experimental.
 
 Additionally you have the Homebridge options `accessory` (for the actual plugin) and `name` (for representation later).
 
@@ -48,7 +48,8 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
       "accessory": "Carwings",
       "name": "Leaf",
       "email": "example@youremail.com",
-      "password": "TmljZVRyeSE="
+      "password": "TmljZVRyeSE=",
+      "updateInterval": "never"
     }
   ],
   "platforms": [
