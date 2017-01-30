@@ -57,5 +57,13 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
 }
 ```
 
+##Screenshots
+
+![Homekit Fan](https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3822.PNG?raw=true =250x "HomeKit interface with Fan")
+![Homekit Interface](https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3823.PNG?raw=true =250x "Homekit settings")
+![Charging Status](https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3819.PNG?raw=true =250x "Is leaf charging?")
+![Fan status](https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3820.PNG?raw=true =250x "Is Leaf Fan off?")
+![Battery Level](https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3824.PNG?raw=true =250x "Leaf battery Level")
+
 ## License
 MIT
