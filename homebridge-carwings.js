@@ -16,6 +16,7 @@ var email, password;
 function loginCarwings() {
   carwings.loginSession(email, password).then(function(session){
     carwingsSession = session;
+    carwings.batteryStatusCheckRequest(carwingsSession);
   });
 }
 
@@ -60,10 +61,11 @@ function CarwingsAccessory(log, config) {
         .on('set', this.setHVAC.bind(this));
 
     var updateInterval = config["updateInterval"] ? config["updateInterval"] : 600000;
+
     if(updateInterval != "never") {
       setInterval(function(){
         carwings.batteryStatusCheckRequest(carwingsSession).then(function(checkStatus){
-          console.log(checkStatus);
+          console.log("Got LEAF request on interval", checkStatus);
           if(status.status == 401) {
             loginCarwings();
           }
@@ -85,7 +87,11 @@ CarwingsAccessory.prototype.getLevel = function(callback) {
       maxValue: status.BatteryStatusRecords.BatteryStatus.BatteryCapacity
     });*/
     //_this.battery.getCharacteristic(Characteristic.BatteryLevel).props.maxValue = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryCapacity);
-    callback(null, parseInt((status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount / status.BatteryStatusRecords.BatteryStatus.BatteryCapacity) * 100));
+
+    var chargePercent = parseInt((status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount / 12) * 100);
+    if(chargePercent > 100) chargePercent = 100;
+    console.log("LEAF charge percent = ", chargePercent);
+    callback(null, chargePercent);
   });
 }
 
