@@ -66,7 +66,7 @@ function CarwingsAccessory(log, config) {
       setInterval(function(){
         carwings.batteryStatusCheckRequest(carwingsSession).then(function(checkStatus){
           console.log("Got LEAF request on interval", checkStatus);
-          if(status.status == 401) {
+          if(checkStatus.status == 401) {
             loginCarwings();
           }
         });
