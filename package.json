@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "carwings": "https://github.com/blandman/carwings",
+    "carwings": "https://github.com/suhajdab/carwings",
     "request": "^2.79.0"
   },
   "engines": {
