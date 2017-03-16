@@ -56,7 +56,7 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
   ]
 }
 ```
-Region options: NNA = USA, NE = Europe, NCI = Canada, NMA = Australia, NML = Japan.
+Region options: NNA = USA [default], NE = Europe, NCI = Canada, NMA = Australia, NML = Japan.
 ([source](https://github.com/jdhorne/pycarwings2/blob/master/pycarwings2/pycarwings2.py#L19-L23))
 
 ## Screenshots
