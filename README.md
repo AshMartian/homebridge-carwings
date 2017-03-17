@@ -33,7 +33,6 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
 
 ### Example config.json
 
-
 ```json
 {
   "bridge": {
@@ -49,6 +48,7 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
       "name": "Leaf",
       "email": "example@youremail.com",
       "password": "TmljZVRyeSE=",
+      "region": "NE",
       "updateInterval": "never"
     }
   ],
@@ -56,8 +56,10 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
   ]
 }
 ```
+Region options: NNA = USA [default], NE = Europe, NCI = Canada, NMA = Australia, NML = Japan.
+([source](https://github.com/jdhorne/pycarwings2/blob/master/pycarwings2/pycarwings2.py#L19-L23))
 
-##Screenshots
+## Screenshots
 
 <img src="https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3822.PNG?raw=true" width="350px" />
 <img src="https://github.com/blandman/homebridge-carwings/blob/screenshots/IMG_3823.PNG?raw=true" width="350px" />

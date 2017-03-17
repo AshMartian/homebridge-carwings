@@ -12,9 +12,9 @@ module.exports = function(homebridge) {
 
 var base64regex = /^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i;
 
-var email, password;
+var email, password, region;
 function loginCarwings() {
-  carwings.loginSession(email, password).then(function(session){
+  carwings.loginSession(email, password, region).then(function(session){
     carwingsSession = session;
     carwings.batteryStatusCheckRequest(carwingsSession);
   });
@@ -26,6 +26,7 @@ function CarwingsAccessory(log, config) {
     this.name = config["name"];
     email = config["email"];
     password = config["password"];
+    region = config["region"];
     if(base64regex.test(password)){
       password = Buffer.from(password, 'base64');
     }
