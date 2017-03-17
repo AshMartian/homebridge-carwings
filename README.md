@@ -23,6 +23,7 @@ The plugin registers itself as `Carwings`. You have the following options:
 | email     | empty |
 | password     | empty      |
 | updateInterval   | 600000      |
+| region  | null |
 
 Email is the email associated with your Nissan Carwings account.
 Password can be plan text (not recommended), or a base64 string of your password.
