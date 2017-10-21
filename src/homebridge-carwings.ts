@@ -1,12 +1,13 @@
+'use strict'
 import * as carwings from 'carwings-typescript'
 import {ICarwingsSession} from 'carwings-typescript'
-var Service, Characteristic;
-
-
 var carwingsSession:ICarwingsSession = null;
+
+declare let console, setInterval;
 declare const Buffer
 
-export default function(homebridge) {
+let  Service, Characteristic;
+export = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
@@ -226,3 +227,4 @@ CarwingsAccessory.prototype.getServices = function() {
       this.hvac
   ];
 }
+
