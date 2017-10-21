@@ -2,7 +2,7 @@
   "name": "homebridge-carwings",
   "version": "0.0.5",
   "description": "Create a HomeKit battery accessory that uses Carwings API 2 to communicate with your vehicle and report battery charge level and a switch to toggle climate control.",
-  "main": "./dist/homebridge-carwings.js",
+  "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --colors --progress --bail",
     "test": "echo \"Error: no test specified\" && exit 1"
