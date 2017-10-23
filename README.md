@@ -1,5 +1,7 @@
 # Homebridge Carwings Plugin (Typescript)
 
+Note: This requires the latest version of hap-nodejs in order to import the typescript type definition files. 
+
 This is an accessory plugin for [Homebridge](https://github.com/nfarina/homebridge) allowing to manage and control the Nissan Leaf. This gives Siri/homeKit the ability to get the HVAC status, battery level, and charge status.
 
 ## What does this plugin do?

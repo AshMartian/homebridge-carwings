@@ -61,16 +61,99 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("crypto");
+
+/***/ }),
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("net");
+
+/***/ }),
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = require("assert");
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("buffer");
+
+/***/ }),
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = require("tty");
+
+/***/ }),
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var carwings = __webpack_require__(1);
+var carwings = __webpack_require__(39);
 var carwingsSession = null;
 var Service, Characteristic;
 var base64regex = /^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i;
@@ -83,6 +166,119 @@ function loginCarwings() {
         }
     });
 }
+// class CarwingsAccessoryT extends HAPNodeJS.Accessory {
+//     battery: HAPNodeJS.Service;
+//     config: CarwingsConfig;
+//     log: any;
+//
+//     constructor(log, config: CarwingsConfig){
+//         super(config.name);
+//         this.log = log;
+//         this.displayName = config["name"];
+//         this.config = config;
+//         email = config["email"];
+//         password = config["password"];
+//         region = config["region"];
+//         if(base64regex.test(password)){
+//             password = Buffer.from(password, 'base64');
+//         }
+//
+//         loginCarwings();
+//
+//         this.battery = new Service.BatteryService(this.name);
+//         this.battery
+//             .getCharacteristic(Characteristic.BatteryLevel)
+//             .on('get', this.getLevel.bind(this));
+//
+//         this.battery
+//             .getCharacteristic(Characteristic.ChargingState)
+//             .on('get', this.getCharging.bind(this));
+//
+//
+//         var updateInterval = config["updateInterval"] ? config["updateInterval"] : 600000;
+//
+//         if(updateInterval != "never") {
+//             setInterval(function(){
+//                 carwings.batteryStatusCheckRequest(carwingsSession).then(function(checkStatus){
+//                     console.log("Got LEAF request on interval", checkStatus);
+//                     if(checkStatus.status == 401) {
+//                         loginCarwings();
+//                     }
+//                 });
+//             }, 600000);
+//         }
+//     }
+//
+//     getLevel(callback){
+//         console.log('GET LEVEL');
+//         if (typeof carwingsSession !== "function") {
+//             loginCarwings();
+//             callback("no_response");
+//             return;
+//         }
+//         try {
+//             //console.log(this.battery.getCharacteristic(Characteristic.BatteryLevel));
+//             carwings.batteryRecords(carwingsSession).then(function(status){
+//                 console.log(status);
+//                 if(status.status == 401) {
+//                     loginCarwings();
+//                     callback("no_response");
+//                 } else {
+//                     carwings.batteryStatusCheckRequest(carwingsSession);
+//                     /*_this.battery.getCharacteristic(Characteristic.BatteryLevel).setProp({
+//                       maxValue: status.BatteryStatusRecords.BatteryStatus.BatteryCapacity
+//                     });*/
+//                     //_this.battery.getCharacteristic(Characteristic.BatteryLevel).props.maxValue = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryCapacity);
+//
+//                     let currentCharge: number = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount);
+//                     let chargePercent: number = Math.floor( currentCharge / 12 * 100);
+//                     if(chargePercent > 100) chargePercent = 100;
+//                     console.log("LEAF charge percent = ", chargePercent);
+//                     callback(null, chargePercent);
+//                 }
+//
+//             });
+//         } catch (e) {
+//             console.error('Carwings getLevel failed to get status ')
+//             callback("no_response");
+//         }
+//
+//     }
+//
+//     getCharging(callback: Function) {
+//         if (typeof carwingsSession !== "function") {
+//             loginCarwings();
+//             callback("no_response");
+//             return;
+//         }
+//         try {
+//             carwings.batteryRecords(carwingsSession).then(function(status){
+//                 //console.log(status);
+//                 if(status.status == 401) {
+//                     loginCarwings();
+//                     callback("no_response");
+//                 } else {
+//                     let batteryChargingStatus = Characteristic.ChargingState.CHARGING;
+//
+//                     if(status.BatteryStatusRecords.PluginState === 'CONNECTED') {
+//                         if(status.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus === 'NOT_CHARGING') {
+//                             batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGING
+//                         }
+//                     } else {
+//                         batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGEABLE
+//                     }
+//                     callback(null, batteryChargingStatus)
+//                 }
+//                 ;
+//             });
+//         } catch(e) {
+//             console.error('Carwings getCharging failed to get status ')
+//             callback("no_response");
+//         }
+//
+//     }
+//
+// }
 function CarwingsAccessory(log, config) {
     this.log = log;
     this.config = config;
@@ -271,7 +467,7 @@ module.exports = function (homebridge) {
 
 
 /***/ }),
-/* 1 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports =
@@ -925,13 +1121,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(2);
+module.exports = __webpack_require__(21);
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(3);
+module.exports = __webpack_require__(40);
 
 /***/ }),
 /* 9 */
@@ -1129,7 +1325,7 @@ Object.keys(nativeProtocols).forEach(function (protocol) {
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(4);
+module.exports = __webpack_require__(22);
 
 /***/ }),
 /* 11 */
@@ -1630,7 +1826,7 @@ exports.authenticateAndBatteryStatusCheckRequest = function (session) { return l
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(1);
 
 /***/ }),
 /* 16 */
@@ -3590,13 +3786,13 @@ module.exports = function httpAdapter(config) {
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(6);
+module.exports = __webpack_require__(15);
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(7);
+module.exports = __webpack_require__(41);
 
 /***/ }),
 /* 34 */
@@ -4221,19 +4417,19 @@ exports.enable(load());
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(8);
+module.exports = __webpack_require__(23);
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(9);
+module.exports = __webpack_require__(0);
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(6);
 
 /***/ }),
 /* 41 */
@@ -4245,7 +4441,7 @@ module.exports = __webpack_require__(11);
 /* 42 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(42);
 
 /***/ }),
 /* 43 */
@@ -4257,7 +4453,7 @@ module.exports = {"_args":[[{"raw":"axios@^0.15.3","scope":null,"escapedName":"a
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(13);
+module.exports = __webpack_require__(16);
 
 /***/ }),
 /* 45 */
@@ -4998,76 +5194,22 @@ module.exports = function (encodedURI) {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("http");
-
-/***/ }),
-/* 3 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("crypto");
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("assert");
-
-/***/ }),
-/* 7 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = require("tty");
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("net");
-
-/***/ }),
-/* 12 */
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("buffer");
 
 /***/ })
 /******/ ]);
