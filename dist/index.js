@@ -61,413 +61,11 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 38);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = require("crypto");
-
-/***/ }),
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("net");
-
-/***/ }),
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("assert");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("buffer");
-
-/***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */
-/***/ (function(module, exports) {
-
-module.exports = require("http");
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = require("tty");
-
-/***/ }),
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var carwings = __webpack_require__(39);
-var carwingsSession = null;
-var Service, Characteristic;
-var base64regex = /^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i;
-var email, password, region;
-function loginCarwings() {
-    carwings.loginSession(email, password, region).then(function (session) {
-        carwingsSession = session;
-        if (typeof carwingsSession === "function") {
-            carwings.batteryStatusCheckRequest(carwingsSession);
-        }
-    });
-}
-// class CarwingsAccessoryT extends HAPNodeJS.Accessory {
-//     battery: HAPNodeJS.Service;
-//     config: CarwingsConfig;
-//     log: any;
-//
-//     constructor(log, config: CarwingsConfig){
-//         super(config.name);
-//         this.log = log;
-//         this.displayName = config["name"];
-//         this.config = config;
-//         email = config["email"];
-//         password = config["password"];
-//         region = config["region"];
-//         if(base64regex.test(password)){
-//             password = Buffer.from(password, 'base64');
-//         }
-//
-//         loginCarwings();
-//
-//         this.battery = new Service.BatteryService(this.name);
-//         this.battery
-//             .getCharacteristic(Characteristic.BatteryLevel)
-//             .on('get', this.getLevel.bind(this));
-//
-//         this.battery
-//             .getCharacteristic(Characteristic.ChargingState)
-//             .on('get', this.getCharging.bind(this));
-//
-//
-//         var updateInterval = config["updateInterval"] ? config["updateInterval"] : 600000;
-//
-//         if(updateInterval != "never") {
-//             setInterval(function(){
-//                 carwings.batteryStatusCheckRequest(carwingsSession).then(function(checkStatus){
-//                     console.log("Got LEAF request on interval", checkStatus);
-//                     if(checkStatus.status == 401) {
-//                         loginCarwings();
-//                     }
-//                 });
-//             }, 600000);
-//         }
-//     }
-//
-//     getLevel(callback){
-//         console.log('GET LEVEL');
-//         if (typeof carwingsSession !== "function") {
-//             loginCarwings();
-//             callback("no_response");
-//             return;
-//         }
-//         try {
-//             //console.log(this.battery.getCharacteristic(Characteristic.BatteryLevel));
-//             carwings.batteryRecords(carwingsSession).then(function(status){
-//                 console.log(status);
-//                 if(status.status == 401) {
-//                     loginCarwings();
-//                     callback("no_response");
-//                 } else {
-//                     carwings.batteryStatusCheckRequest(carwingsSession);
-//                     /*_this.battery.getCharacteristic(Characteristic.BatteryLevel).setProp({
-//                       maxValue: status.BatteryStatusRecords.BatteryStatus.BatteryCapacity
-//                     });*/
-//                     //_this.battery.getCharacteristic(Characteristic.BatteryLevel).props.maxValue = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryCapacity);
-//
-//                     let currentCharge: number = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount);
-//                     let chargePercent: number = Math.floor( currentCharge / 12 * 100);
-//                     if(chargePercent > 100) chargePercent = 100;
-//                     console.log("LEAF charge percent = ", chargePercent);
-//                     callback(null, chargePercent);
-//                 }
-//
-//             });
-//         } catch (e) {
-//             console.error('Carwings getLevel failed to get status ')
-//             callback("no_response");
-//         }
-//
-//     }
-//
-//     getCharging(callback: Function) {
-//         if (typeof carwingsSession !== "function") {
-//             loginCarwings();
-//             callback("no_response");
-//             return;
-//         }
-//         try {
-//             carwings.batteryRecords(carwingsSession).then(function(status){
-//                 //console.log(status);
-//                 if(status.status == 401) {
-//                     loginCarwings();
-//                     callback("no_response");
-//                 } else {
-//                     let batteryChargingStatus = Characteristic.ChargingState.CHARGING;
-//
-//                     if(status.BatteryStatusRecords.PluginState === 'CONNECTED') {
-//                         if(status.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus === 'NOT_CHARGING') {
-//                             batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGING
-//                         }
-//                     } else {
-//                         batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGEABLE
-//                     }
-//                     callback(null, batteryChargingStatus)
-//                 }
-//                 ;
-//             });
-//         } catch(e) {
-//             console.error('Carwings getCharging failed to get status ')
-//             callback("no_response");
-//         }
-//
-//     }
-//
-// }
-function CarwingsAccessory(log, config) {
-    this.log = log;
-    this.config = config;
-    this.name = config["name"];
-    email = config["email"];
-    password = config["password"];
-    region = config["region"];
-    if (base64regex.test(password)) {
-        password = Buffer.from(password, 'base64');
-    }
-    loginCarwings();
-    this.battery = new Service.BatteryService(this.name);
-    this.battery
-        .getCharacteristic(Characteristic.BatteryLevel)
-        .on('get', this.getLevel.bind(this));
-    this.battery
-        .getCharacteristic(Characteristic.ChargingState)
-        .on('get', this.getCharging.bind(this));
-    this.hvac = new Service.Fanv2(this.name);
-    this.hvac.getCharacteristic(Characteristic.Active)
-        .on('get', this.getHVAC.bind(this))
-        .on('set', this.setHVAC.bind(this));
-    // this.heater = new Service.HeaterCooler(this.name);
-    // this.heater.getCharacteristic(Characteristic.Active)
-    //   .on('get', this.getHVAC.bind(this))
-    //   .on('set', this.setHVAC.bind(this));
-    // this.switch = new Service.Switch(this.name);
-    // this.switch.getCharacteristic(Characteristic.On)
-    //     .on('get', this.getHVAC.bind(this))
-    //     .on('set', this.setHVAC.bind(this));
-    var updateInterval = config["updateInterval"] ? config["updateInterval"] : 600000;
-    if (updateInterval != "never") {
-        setInterval(function () {
-            carwings.batteryStatusCheckRequest(carwingsSession).then(function (checkStatus) {
-                console.log("Got LEAF request on interval", checkStatus);
-                if (checkStatus.status == 401) {
-                    loginCarwings();
-                }
-            });
-        }, 600000);
-    }
-}
-CarwingsAccessory.prototype.getLevel = function (callback) {
-    console.log('GET LEVEL');
-    if (typeof carwingsSession !== "function") {
-        loginCarwings();
-        callback("no_response");
-        return;
-    }
-    try {
-        //console.log(this.battery.getCharacteristic(Characteristic.BatteryLevel));
-        var _this = this;
-        carwings.batteryRecords(carwingsSession).then(function (status) {
-            console.log(status);
-            if (status.status == 401) {
-                loginCarwings();
-                callback("no_response");
-            }
-            else {
-                carwings.batteryStatusCheckRequest(carwingsSession);
-                /*_this.battery.getCharacteristic(Characteristic.BatteryLevel).setProp({
-                  maxValue: status.BatteryStatusRecords.BatteryStatus.BatteryCapacity
-                });*/
-                //_this.battery.getCharacteristic(Characteristic.BatteryLevel).props.maxValue = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryCapacity);
-                var currentCharge = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount);
-                var chargePercent = Math.floor(currentCharge / 12 * 100);
-                if (chargePercent > 100)
-                    chargePercent = 100;
-                console.log("LEAF charge percent = ", chargePercent);
-                callback(null, chargePercent);
-            }
-        });
-    }
-    catch (e) {
-        console.error('Carwings getLevel failed to get status ');
-        callback("no_response");
-    }
-};
-CarwingsAccessory.prototype.getCharging = function (callback) {
-    if (typeof carwingsSession !== "function") {
-        loginCarwings();
-        callback("no_response");
-        return;
-    }
-    try {
-        carwings.batteryRecords(carwingsSession).then(function (status) {
-            //console.log(status);
-            if (status.status == 401) {
-                loginCarwings();
-                callback("no_response");
-            }
-            else {
-                var batteryChargingStatus = Characteristic.ChargingState.CHARGING;
-                if (status.BatteryStatusRecords.PluginState === 'CONNECTED') {
-                    if (status.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus === 'NOT_CHARGING') {
-                        batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGING;
-                    }
-                }
-                else {
-                    batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGEABLE;
-                }
-                callback(null, batteryChargingStatus);
-            }
-            ;
-        });
-    }
-    catch (e) {
-        console.error('Carwings getCharging failed to get status ');
-        callback("no_response");
-    }
-};
-CarwingsAccessory.prototype.getHVAC = function (callback) {
-    if (typeof carwingsSession !== "function") {
-        loginCarwings();
-        callback("no_response");
-        return;
-    }
-    //console.log(this);
-    try {
-        carwings.hvacStatus(carwingsSession).then(function (status) {
-            //console.log(status);
-            if (status.status == 401) {
-                loginCarwings();
-                callback("no_response");
-            }
-            else {
-                callback(null, status.RemoteACRecords.RemoteACOperation !== 'STOP');
-            }
-        });
-    }
-    catch (e) {
-        console.error('Carwings getHVAC failed to get status ');
-        callback("no_response");
-    }
-};
-CarwingsAccessory.prototype.setHVAC = function (on, callback) {
-    if (typeof carwingsSession !== "function") {
-        loginCarwings();
-        callback("no_response");
-        return;
-    }
-    try {
-        if (on) {
-            carwings.hvacOn(carwingsSession).then(function (status) {
-                //console.log(status);
-                if (status.status == 401) {
-                    loginCarwings();
-                    callback("no_response");
-                }
-                else {
-                    callback(null, true);
-                }
-            });
-        }
-        else {
-            carwings.hvacOff(carwingsSession).then(function (status) {
-                //console.log(status);
-                if (status.status == 401) {
-                    loginCarwings();
-                    callback("no_response");
-                }
-                else {
-                    callback(null, false);
-                }
-            });
-        }
-    }
-    catch (e) {
-        console.error('Carwings setHVAC failed to set status ' + on);
-        callback("no_response");
-    }
-};
-CarwingsAccessory.prototype.getServices = function () {
-    return [
-        this.battery,
-        //this.heater,
-        //this.switch,
-        this.hvac
-    ];
-};
-module.exports = function (homebridge) {
-    Service = homebridge.hap.Service;
-    Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory("homebridge-carwings", "Carwings", CarwingsAccessory);
-};
-
-
-/***/ }),
-/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports =
@@ -1121,13 +719,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(2);
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(40);
+module.exports = __webpack_require__(3);
 
 /***/ }),
 /* 9 */
@@ -1325,7 +923,7 @@ Object.keys(nativeProtocols).forEach(function (protocol) {
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(22);
+module.exports = __webpack_require__(4);
 
 /***/ }),
 /* 11 */
@@ -1636,6 +1234,32 @@ var defaultRegionCode = 'NNA';
 var language = 'en-US';
 var tz = 'America/Denver';
 var tlog = function (t) { return _.thru(function (d) { console.log(t, d); return d; }); };
+var CarwingsAuthenticator = /** @class */ (function () {
+    function CarwingsAuthenticator(username, password, regionCode) {
+        var base64regex = /^(?:[A-Z0-9+\/]{4})*(?:[A-Z0-9+\/]{2}==|[A-Z0-9+\/]{3}=|[A-Z0-9+\/]{4})$/i;
+        this.username = username;
+        this.password = password;
+        this.regionCode = regionCode;
+        if (base64regex.test(this.password)) {
+            this.password = Buffer.from(password, 'base64').toString();
+        }
+    }
+    CarwingsAuthenticator.prototype.login = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var session;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, exports.loginSession(this.username, this.password, this.regionCode)];
+                    case 1:
+                        session = _a.sent();
+                        return [2 /*return*/, session];
+                }
+            });
+        });
+    };
+    return CarwingsAuthenticator;
+}());
+exports.CarwingsAuthenticator = CarwingsAuthenticator;
 /**
  * Sleeps.
  * @param {number} ms
@@ -1660,13 +1284,14 @@ function api(action, data) {
                 case 1:
                     response = _a.sent();
                     if (response.data.status === 200) {
+                        //console.log(`🍃 api ${action} 👍`, data);
                         console.log("\uD83C\uDF43 api " + action + " \uD83D\uDC4D");
                         return [2 /*return*/, response.data];
                     }
                     else {
-                        if (response.data.status === 401) {
+                        if (response.data && response.data.status === 401) {
                             // Send back 401 response so it can be handled.
-                            console.log('Carwings Status 401');
+                            // console.log('Carwings Status 401');
                             return [2 /*return*/, response.data];
                         }
                         else {
@@ -1692,6 +1317,7 @@ var blowPassword = _.curry(function (key, plainpass) {
  * @returns {string}
  */
 function getsessionid(profile) {
+    //console.log("LOGIN", profile);
     if (profile && profile.vehicleInfo[0]) {
         return profile.vehicleInfo[0].custom_sessionid;
     }
@@ -1722,6 +1348,7 @@ var acompose = function (fn) {
         rest[_i - 1] = arguments[_i];
     }
     if (rest.length) {
+        console.log('acompose ', rest);
         return function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -1780,7 +1407,11 @@ exports.loginSession = acompose(function (sessionRequest) { return function (act
         case 0: return [4 /*yield*/, api(action, __assign({}, sessionRequest))];
         case 1: return [2 /*return*/, _a.sent()];
     }
-}); }); }; }, function (resultResponse) { return ({ custom_sessionid: getsessionid(resultResponse), VIN: getvin(resultResponse), RegionCode: getregioncode(resultResponse) }); }, //transforms auth response.
+}); }); }; }, function (resultResponse) { return ({
+    custom_sessionid: getsessionid(resultResponse),
+    VIN: getvin(resultResponse),
+    RegionCode: getregioncode(resultResponse)
+}); }, //transforms auth response.
 performAuthentication);
 /**
  * Returns a result after waiting for 5000ms and a callback.
@@ -1789,29 +1420,52 @@ var polledResult = _.curry(function (session, action, resultKey) { return __awai
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: 
+            case 0:
+                console.info("ResultKey 🔑", resultKey);
+                console.info("action ", action);
+                _a.label = 1;
+            case 1: 
             //sleep and make a request.
             return [4 /*yield*/, sleep(5000)];
-            case 1:
+            case 2:
                 //sleep and make a request.
                 _a.sent();
                 return [4 /*yield*/, session(action, { resultKey: resultKey })];
-            case 2:
-                result = _a.sent();
-                _a.label = 3;
             case 3:
-                if (result.responseFlag !== '1') return [3 /*break*/, 0];
+                result = _a.sent();
+                console.log('POLLED result', result);
                 _a.label = 4;
-            case 4: return [2 /*return*/, result];
+            case 4:
+                if (result.responseFlag !== '1') return [3 /*break*/, 1];
+                _a.label = 5;
+            case 5: return [2 /*return*/, result];
         }
     });
 }); });
 /**
  * Makes a request for the action, and then keeps polling for the polledAction to complete.
  */
-var longPolledRequest = _.curry(function (action, polledAction, session) {
-    return acompose(polledResult(session, polledAction), function (actionResponseResult) { return actionResponseResult.resultKey; }, function () { return session(action); })();
-});
+var longPolledRequest = _.curry(function (action, polledAction, session) { return __awaiter(_this, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.info("⏰  making a long polled request..." + action + ' ' + polledAction);
+                return [4 /*yield*/, acompose(polledResult(session, polledAction), function (actionResponseResult) { return actionResponseResult.resultKey; }, function () { return session(action); })()];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/, result];
+        }
+    });
+}); });
+// const longPolledRequest = _.curry(async (action:string, polledAction:string, session:ICarwingsSession) => {
+//   console.info("⏰  making a long polled request..." + action + ' ' + polledAction);
+//   return acompose(
+//     await polledResult(session, polledAction),
+//     actionResponseResult => actionResponseResult.resultKey,
+//     () => session(action),
+//   );
+// });
 exports.batteryRecords = function (session) { return session('BatteryStatusRecordsRequest'); };
 exports.batteryStatusCheckRequest = function (session) { return session('BatteryStatusCheckRequest'); };
 exports.batteryStatusCheck = function (session) { return longPolledRequest('BatteryStatusCheckRequest', 'BatteryStatusCheckResultRequest', session); };
@@ -1826,7 +1480,7 @@ exports.authenticateAndBatteryStatusCheckRequest = function (session) { return l
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(1);
+module.exports = __webpack_require__(5);
 
 /***/ }),
 /* 16 */
@@ -3786,13 +3440,13 @@ module.exports = function httpAdapter(config) {
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(15);
+module.exports = __webpack_require__(6);
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(41);
+module.exports = __webpack_require__(7);
 
 /***/ }),
 /* 34 */
@@ -4417,19 +4071,19 @@ exports.enable(load());
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(23);
+module.exports = __webpack_require__(8);
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(0);
+module.exports = __webpack_require__(9);
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(6);
+module.exports = __webpack_require__(10);
 
 /***/ }),
 /* 41 */
@@ -4441,19 +4095,19 @@ module.exports = __webpack_require__(11);
 /* 42 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(12);
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"axios@^0.15.3","scope":null,"escapedName":"axios","name":"axios","rawSpec":"^0.15.3","spec":">=0.15.3 <0.16.0","type":"range"},"/Users/bhagyasilva/temp/carwings"]],"_from":"axios@>=0.15.3 <0.16.0","_id":"axios@0.15.3","_inCache":true,"_location":"/axios","_nodeVersion":"7.0.0","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/axios-0.15.3.tgz_1480283949051_0.7373273745179176"},"_npmUser":{"name":"nickuraltsev","email":"nick.uraltsev@gmail.com"},"_npmVersion":"3.10.8","_phantomChildren":{},"_requested":{"raw":"axios@^0.15.3","scope":null,"escapedName":"axios","name":"axios","rawSpec":"^0.15.3","spec":">=0.15.3 <0.16.0","type":"range"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.15.3.tgz","_shasum":"2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053","_shrinkwrap":null,"_spec":"axios@^0.15.3","_where":"/Users/bhagyasilva/temp/carwings","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/mzabriskie/axios/issues"},"dependencies":{"follow-redirects":"1.0.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^2.11.9","es6-promise":"^4.0.5","grunt":"^1.0.1","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.0.0","grunt-contrib-nodeunit":"^1.0.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^19.0.0","grunt-karma":"^2.0.0","grunt-ts":"^6.0.0-beta.3","grunt-typings":"^0.1.5","grunt-webpack":"^1.0.18","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^1.3.0","karma-chrome-launcher":"^2.0.0","karma-coverage":"^1.0.0","karma-firefox-launcher":"^1.0.0","karma-jasmine":"^1.0.2","karma-jasmine-ajax":"^0.1.13","karma-opera-launcher":"^1.0.0","karma-phantomjs-launcher":"^1.0.0","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^1.1.0","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^1.7.0","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","phantomjs-prebuilt":"^2.1.7","sinon":"^1.17.4","typescript":"^2.0.3","url-search-params":"^0.6.1","webpack":"^1.13.1","webpack-dev-server":"^1.14.1"},"directories":{},"dist":{"shasum":"2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053","tarball":"https://registry.npmjs.org/axios/-/axios-0.15.3.tgz"},"gitHead":"4976816808c4e81acad2393c429832afeaf9664d","homepage":"https://github.com/mzabriskie/axios","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","maintainers":[{"name":"mzabriskie","email":"mzabriskie@gmail.com"},{"name":"nickuraltsev","email":"nick.uraltsev@gmail.com"}],"name":"axios","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git+https://github.com/mzabriskie/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","version":"0.15.3"}
+module.exports = {"_from":"axios@^0.15.3","_id":"axios@0.15.3","_inBundle":false,"_integrity":"sha1-LJ1jiy4ZGgjqHWzJiOrda6W9wFM=","_location":"/axios","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"axios@^0.15.3","name":"axios","escapedName":"axios","rawSpec":"^0.15.3","saveSpec":null,"fetchSpec":"^0.15.3"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.15.3.tgz","_shasum":"2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053","_spec":"axios@^0.15.3","_where":"/Users/peter/Code/homebridge/carwings-typescript","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/mzabriskie/axios/issues"},"bundleDependencies":false,"dependencies":{"follow-redirects":"1.0.0"},"deprecated":false,"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^2.11.9","es6-promise":"^4.0.5","grunt":"^1.0.1","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.0.0","grunt-contrib-nodeunit":"^1.0.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^19.0.0","grunt-karma":"^2.0.0","grunt-ts":"^6.0.0-beta.3","grunt-typings":"^0.1.5","grunt-webpack":"^1.0.18","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^1.3.0","karma-chrome-launcher":"^2.0.0","karma-coverage":"^1.0.0","karma-firefox-launcher":"^1.0.0","karma-jasmine":"^1.0.2","karma-jasmine-ajax":"^0.1.13","karma-opera-launcher":"^1.0.0","karma-phantomjs-launcher":"^1.0.0","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^1.1.0","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.7","karma-webpack":"^1.7.0","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","phantomjs-prebuilt":"^2.1.7","sinon":"^1.17.4","typescript":"^2.0.3","url-search-params":"^0.6.1","webpack":"^1.13.1","webpack-dev-server":"^1.14.1"},"homepage":"https://github.com/mzabriskie/axios","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/mzabriskie/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","version":"0.15.3"}
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(16);
+module.exports = __webpack_require__(13);
 
 /***/ }),
 /* 45 */
@@ -5194,22 +4848,377 @@ module.exports = function (encodedURI) {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 40 */
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var carwings = __webpack_require__(0);
+var carwings_typescript_1 = __webpack_require__(0);
+var ICarwings_1 = __webpack_require__(14);
+var carwingsSession = null;
+var carwingsAuthenticator = null;
+var Homebridge;
+var Service;
+var Characteristic;
+var Accessory;
+var CarwingsPlatform = /** @class */ (function () {
+    function CarwingsPlatform(log, config) {
+        this.log = log;
+        this.config = config;
+        carwingsAuthenticator = new carwings_typescript_1.CarwingsAuthenticator(this.config.username, this.config.password, this.config.region);
+        carwingsAuthenticator.login().then(function (loginSession) {
+            console.log('LOGGED IN !!!');
+            carwingsSession = loginSession;
+        });
+    }
+    CarwingsPlatform.prototype.accessories = function (callback) {
+        var acessoryNameHeater = this.config.name + ' Heater';
+        var heater = new CarwingsHeater(acessoryNameHeater, Homebridge.hap.uuid.generate(acessoryNameHeater), this.log);
+        var acessoryNameBattery = this.config.name + ' Battery';
+        var battery = new CarwingsBattery(acessoryNameBattery, Homebridge.hap.uuid.generate(acessoryNameBattery), this.log);
+        callback([heater, battery]);
+    };
+    return CarwingsPlatform;
+}());
+var CarwingsHeater = /** @class */ (function (_super) {
+    __extends(CarwingsHeater, _super);
+    function CarwingsHeater() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    CarwingsHeater.prototype.getServices = function () {
+        //console.log('getServices Heater');
+        var uuid = Homebridge.hap.uuid.generate(this.name);
+        this.hvacService = new Service.Fanv2(this.name);
+        this.hvacService.getCharacteristic(Characteristic.Active)
+            .on('get', this.getHvacState.bind(this))
+            .on('set', this.setHvacState.bind(this));
+        this.informationService = new Service.AccessoryInformation();
+        this.informationService
+            .setCharacteristic(Characteristic.Manufacturer, 'Loftux Carwings')
+            .setCharacteristic(Characteristic.Model, 'Heater-Cooler');
+        return [this.hvacService, this.informationService];
+    };
+    CarwingsHeater.prototype.getHvacState = function (callback) {
+        if (typeof carwingsSession !== "function") {
+            carwingsAuthenticator.login().then((function (loginSession) {
+                carwingsSession = loginSession;
+            }));
+            return callback("no_response");
+        }
+        try {
+            carwings.hvacStatus(carwingsSession).then(function (status) {
+                if (status.status == 401) {
+                    carwingsAuthenticator.login().then((function (loginSession) {
+                        carwingsSession = loginSession;
+                    }));
+                    return callback("no_response");
+                }
+                else {
+                    if (status.RemoteACRecords && status.RemoteACRecords.RemoteACOperation) {
+                        return callback(null, status.RemoteACRecords.RemoteACOperation !== 'STOP');
+                    }
+                    else if (status.status == 200) {
+                        // Carwings sometims only returns status 200 and not a complete RemoteACRecords when turned off
+                        return callback(null, false);
+                    }
+                    else {
+                        console.error("get hvacStatus unknown response ", status);
+                        return callback("no_response");
+                    }
+                }
+            });
+        }
+        catch (e) {
+            console.error('Carwings getHVAC failed to get status\n ' + e.message);
+            return callback("no_response");
+        }
+    };
+    CarwingsHeater.prototype.setHvacState = function (value, callback) {
+        if (typeof carwingsSession !== "function") {
+            carwingsAuthenticator.login().then((function (loginSession) {
+                carwingsSession = loginSession;
+            }));
+            return callback("no_response");
+        }
+        ;
+        try {
+            if (value === 1) {
+                carwings.hvacOn(carwingsSession).then(function (status) {
+                    //console.log(status);
+                    if (status.status == 401) {
+                        carwingsAuthenticator.login().then((function (loginSession) {
+                            carwingsSession = loginSession;
+                        }));
+                        return callback("no_response");
+                    }
+                    else {
+                        return callback(null, true);
+                    }
+                });
+            }
+            else {
+                carwings.hvacOff(carwingsSession).then(function (status) {
+                    //console.log(status);
+                    if (status.status == 401) {
+                        carwingsAuthenticator.login().then((function (loginSession) {
+                            carwingsSession = loginSession;
+                        }));
+                        return callback("no_response");
+                    }
+                    else {
+                        return callback(null, false);
+                    }
+                });
+            }
+        }
+        catch (e) {
+            console.error('Carwings setHVAC failed to set status ' + value);
+            return callback("no_response");
+        }
+    };
+    return CarwingsHeater;
+}(ICarwings_1.CarwingsAccessory));
+var CarwingsBattery = /** @class */ (function (_super) {
+    __extends(CarwingsBattery, _super);
+    function CarwingsBattery() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.chargePercent = 0;
+        _this.statusLowBattery = 0;
+        _this.chargingState = 0;
+        _this.switchState = 0;
+        return _this;
+    }
+    CarwingsBattery.prototype.getServices = function () {
+        var uuid = Homebridge.hap.uuid.generate(this.name);
+        this.switchService = new Service.Switch(this.name, uuid, "switch");
+        this.switchService.getCharacteristic(Characteristic.On)
+            .on('get', this.getState.bind(this))
+            .on('set', this.setState.bind(this));
+        this.batteryService = new Service.BatteryService(this.name, uuid, "battery");
+        this.batteryService.getCharacteristic(Characteristic.BatteryLevel)
+            .on('get', this.getBatteryLevel.bind(this));
+        this.batteryService.getCharacteristic(Characteristic.StatusLowBattery)
+            .on('get', this.getStatusLowBattery.bind(this));
+        this.batteryService.getCharacteristic(Characteristic.ChargingState)
+            .on('get', this.getChargingState.bind(this));
+        // Characteristic.BatteryLevel
+        // Characteristic.StatusLowBattery
+        this.informationService = new Service.AccessoryInformation();
+        this.informationService
+            .setCharacteristic(Characteristic.Manufacturer, 'Loftux Carwings')
+            .setCharacteristic(Characteristic.Model, 'Battery');
+        return [this.switchService, this.batteryService, this.informationService];
+    };
+    CarwingsBattery.prototype.getBatteryLevel = function (callback) {
+        //console.info("returning battery level. 🔋" + this.chargePercent);
+        callback(null, this.chargePercent);
+    };
+    CarwingsBattery.prototype.getStatusLowBattery = function (callback) {
+        //console.info("returning statusLowBattery level. 🔋" + this.statusLowBattery);
+        callback(null, this.statusLowBattery);
+    };
+    CarwingsBattery.prototype.getChargingState = function (callback) {
+        //console.info("returning ChargingState level. 🔋" + this.chargingState);
+        callback(null, this.chargingState);
+    };
+    CarwingsBattery.prototype.getState = function (callback) {
+        //console.info("returning Switch state. 🔋");
+        var _this = this;
+        if (typeof carwingsSession !== "function") {
+            carwingsAuthenticator.login().then((function (loginSession) {
+                carwingsSession = loginSession;
+            }));
+            return callback("no_response");
+        }
+        try {
+            var self = this;
+            carwings.batteryRecords(carwingsSession).then(function (status) {
+                if (status.status == 401) {
+                    carwingsAuthenticator.login().then((function (loginSession) {
+                        carwingsSession = loginSession;
+                    }));
+                    return callback("no_response");
+                }
+                else {
+                    self.updateBatteryProperties(status);
+                    callback(null, _this.switchState);
+                }
+            });
+            try {
+                carwings.batteryStatusCheckRequest(carwingsSession);
+                // carwings.batteryStatusCheck(carwingsSession).then(status =>  {
+                //     console.log('FIRST STEP LONG POLL');
+                //     if(status.status == 401) {
+                //         carwingsAuthenticator.login().then((loginSession => {
+                //             carwingsSession = loginSession
+                //         }));
+                //     } else {
+                //         carwings.batteryRecords(carwingsSession).then(status =>  {
+                //             console.log('SECOND STEP LONG POLL');
+                //             if(status.status == 401) {
+                //                 carwingsAuthenticator.login().then((loginSession => {
+                //                     carwingsSession = loginSession
+                //                 }));
+                //             } else {
+                //                 self.updateBatteryProperties(status);
+                //             }
+                //
+                //         });
+                //     }
+                //
+                // });
+            }
+            catch (err) {
+                console.log(' ERROR LONG POLL ' + err.message);
+            }
+        }
+        catch (e) {
+            console.error('Carwings getCharging failed to get status \n ' + e.message);
+            callback("no_response");
+        }
+    };
+    CarwingsBattery.prototype.setState = function (value, callback) {
+        return callback();
+    };
+    CarwingsBattery.prototype.updateBatteryProperties = function (status) {
+        var batteryChargingStatus = Characteristic.ChargingState.CHARGING;
+        if (status.BatteryStatusRecords.PluginState === 'CONNECTED') {
+            if (status.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus === 'NOT_CHARGING') {
+                batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGING;
+            }
+        }
+        else {
+            batteryChargingStatus = Characteristic.ChargingState.NOT_CHARGEABLE;
+        }
+        this.chargingState = batteryChargingStatus;
+        var currentCharge = parseInt(status.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount);
+        var chargePercent = Math.floor(currentCharge / 12 * 100);
+        if (chargePercent > 100)
+            chargePercent = 100;
+        this.chargePercent = chargePercent;
+        this.statusLowBattery = (chargePercent < 20 ? 1 : 0);
+        this.switchState = (batteryChargingStatus === Characteristic.ChargingState.CHARGING ? 1 : 0);
+        this.batteryService.setCharacteristic(Characteristic.BatteryLevel, this.chargePercent);
+        this.batteryService.setCharacteristic(Characteristic.ChargingState, this.chargingState);
+        this.batteryService.setCharacteristic(Characteristic.StatusLowBattery, this.statusLowBattery);
+        this.switchService.setCharacteristic(Characteristic.On, this.switchState);
+        //self.batteryService.setCharacteristic(Characteristic.StatusLowBattery, (chargePercent < 20 ? 1 : 0));
+    };
+    return CarwingsBattery;
+}(ICarwings_1.CarwingsAccessory));
+module.exports = function (homebridge) {
+    Homebridge = homebridge;
+    Service = homebridge.hap.Service;
+    Characteristic = homebridge.hap.Characteristic;
+    //Accessory = homebridge.platformAccessory;
+    homebridge.registerPlatform("homebridge-carwings-platform", "Carwings Platform", CarwingsPlatform, false);
+};
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 41 */
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("crypto");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("assert");
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 42 */
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("tty");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("net");
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = require("buffer");
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var CarwingsAccessory = /** @class */ (function () {
+    function CarwingsAccessory(name, uuid, log) {
+        this.log = log;
+        this.name = name;
+        this.UUID = uuid;
+    }
+    CarwingsAccessory.prototype.getServices = function () {
+        return [];
+    };
+    ;
+    return CarwingsAccessory;
+}());
+exports.CarwingsAccessory = CarwingsAccessory;
+
 
 /***/ })
 /******/ ]);
