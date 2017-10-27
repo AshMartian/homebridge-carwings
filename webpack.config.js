@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./src/homebridge-carwings.ts",
+    entry: "./src/homebridge-carwings-platform.ts",
     output: {
         filename: "index.js",
         path: __dirname + "/dist",

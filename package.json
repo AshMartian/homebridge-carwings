@@ -1,23 +1,23 @@
 {
-  "name": "homebridge-carwings",
-  "version": "0.0.5",
-  "description": "Create a HomeKit battery accessory that uses Carwings API 2 to communicate with your vehicle and report battery charge level and a switch to toggle climate control.",
+  "name": "homebridge-carwings-platform",
+  "version": "0.9.0",
+  "description": "Create a HomeKit battery and heater accessory that uses Carwings API 2 to communicate with your vehicle and report battery charge level and a switch to toggle climate control.",
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack --colors --progress --bail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Brandon Martin",
+  "author": "Bhagya Silva, Peter Löfgren",
   "repository": {
     "type": "git",
-    "url": "git://github.com/blandman/homebridge-carwings.git"
+    "url": "git://github.com/bhagyas/homebridge-carwings-platform.git"
   },
   "bugs": {
-    "url": "https://github.com/blandman/homebridge-carwings/issues"
+    "url": "https://github.com/bhagyas/homebridge-carwings-platform/issues"
   },
   "license": "MIT",
   "dependencies": {
-    "carwings-typescript": "0.1.0",
+    "carwings-typescript": "bhagyas/carwings-typescript",
     "request": "^2.79.0",
     "hap-nodejs": "0.4.33"
   },

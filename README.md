@@ -1,4 +1,4 @@
-# Homebridge Carwings Plugin (Typescript)
+# Homebridge Carwings Platform Plugin (Typescript)
 
 Note: This requires the latest version of hap-nodejs in order to import the typescript type definition files. 
 
@@ -14,7 +14,7 @@ This plugin connects to the carwings API using provided credentials, then adds a
 
 If you have already installed homebridge globally, just install
 
-```npm install -g homebridge-carwings```
+```npm install -g homebridge-carwings-platform```
 
 ## Configuration
 
@@ -22,17 +22,20 @@ The plugin registers itself as `Carwings`. You have the following options:
 
 | Option   | Default   |
 | -------- | --------- |
-| email     | empty |
+| name     | empty |
+| username     | empty |
 | password     | empty      |
 | updateInterval   | 600000      |
 | region  | null |
 
-Email is the email associated with your Nissan Carwings account.
-Password can be plan text (not recommended), or a base64 string of your password.
+Name is the initial name display in Homekit, this you can change in the Home app later.
+Username is the email or a username (older carwings account) associated with your Nissan Carwings account.
+Password must be base64 string of your password. On linux you can do ```echo -n "mypassword"|base64```
 
 **Warning: Update Interval may spam your phone with charge notifications from the Nissan App.** You may want to turn these notifications off or set updateInterval to "never". This is currently experimental.
 
-Additionally you have the Homebridge options `accessory` (for the actual plugin) and `name` (for representation later).
+**NOTE: Put your configuration under platforms as shown below**
+Previous versions that this project forked from added carwings as an accessory.
 
 ### Example config.json
 
@@ -46,16 +49,16 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
   },
   "description": "This is an example configuration file with carwings plugin.",
   "accessories": [
-    {
-      "accessory": "Carwings",
-      "name": "Leaf",
-      "email": "example@youremail.com",
-      "password": "TmljZVRyeSE=",
-      "region": "NE",
-      "updateInterval": "never"
-    }
   ],
   "platforms": [
+      {
+        "platform": "Carwings Platform",
+        "name": "Leaf",
+        "email": "example@youremail.com",
+        "password": "TmljZVRyeSE=",
+        "region": "NE",
+        "updateInterval": "never"
+      }
   ]
 }
 ```
