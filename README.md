@@ -33,7 +33,8 @@ The plugin registers itself as `Carwings`. You have the following options:
 
 | Option   | Default   | Comment  |
 | -------- | --------- | --------- |
-| name     | empty | |
+| platform | Carwings Platform | Must always be this value, else it fails to start|
+| name     | empty | Add a name that will be part of inital Accessory name|
 | username     | empty | |
 | password     | empty      | |
 | updateInterval   | 60      | Time in minutes (number). Must be 10 or greater, lower values turns automatic updates off.|
@@ -64,7 +65,7 @@ Previous versions that this project forked from added carwings as an accessory.
       {
         "platform": "Carwings Platform",
         "name": "Leaf",
-        "email": "example@youremail.com",
+        "username": "example@youremail.com",
         "password": "TmljZVRyeSE=",
         "region": "NE",
         "updateInterval": 0
@@ -75,7 +76,7 @@ Previous versions that this project forked from added carwings as an accessory.
 ```
 
 ## Login sessions and other Carwings apps.
-Since you will be using the same login credentials you use in other Apps, the logged in session in homebridge-carwings-platform will be invalidated.
+Since you will be using the same login credentials you use in other Apps, the logged in session in homebridge-carwings-platform will be invalidated when you do.
 The result will initially be "No Response" in HomeKit, but the invalidated session will be detected and homebridge-carwings-platform creates an new loggged in session.
 
 ## Screenshots
