@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "carwings-typescript": "0.9.1",
+    "carwings-typescript": "bhagyas/carwings-typescript",
     "request": "^2.79.0",
     "hap-nodejs": "0.4.33"
   },
