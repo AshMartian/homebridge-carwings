@@ -1,6 +1,10 @@
-# Homebridge Carwings Plugin
+# Homebridge Carwings Platform Plugin (Typescript)
+
+Note: This requires the latest version of hap-nodejs in order to import the typescript type definition files.
 
 This is an accessory plugin for [Homebridge](https://github.com/nfarina/homebridge) allowing to manage and control the Nissan Leaf. This gives Siri/homeKit the ability to get the HVAC status, battery level, and charge status.
+
+This project is a fork of [Brandon Martin, blandman](https://github.com/blandman/homebridge-carwings). Thanks for his original work!
 
 ## What does this plugin do?
 
@@ -12,25 +16,37 @@ This plugin connects to the carwings API using provided credentials, then adds a
 
 If you have already installed homebridge globally, just install
 
-```npm install -g homebridge-carwings```
+```
+npm install -g bhagyas/homebridge-carwings-platform
+```
+If you receive permissions error, you may have to downgrade to npm v4
+```
+npm install -g npm@4
+```
+
+### Debug
+Run homebridge with -D parameter to turn on debug.
 
 ## Configuration
 
 The plugin registers itself as `Carwings`. You have the following options:
 
-| Option   | Default   |
-| -------- | --------- |
-| email     | empty |
-| password     | empty      |
-| updateInterval   | 600000      |
-| region  | null |
+| Option   | Default   | Comment  |
+| -------- | --------- | --------- |
+| platform | Carwings Platform | Must always be this value, else it fails to start|
+| name     | empty | Add a name that will be part of inital Accessory name|
+| username     | empty | |
+| password     | empty      | |
+| updateInterval   | 60      | Time in minutes (number). Must be 10 or greater, lower values turns automatic updates off.|
+| region  | NNA | Region options: NNA = USA, NE = Europe, NCI = Canada, NMA = Australia, NML = Japan. ([source](https://github.com/jdhorne/pycarwings2/blob/master/pycarwings2/pycarwings2.py#L19-L23))|
+|lowBattery|26| Battery level in percent when low battery warning is shown. Note that percent is always in increments of 1/12|
 
-Email is the email associated with your Nissan Carwings account.
-Password can be plan text (not recommended), or a base64 string of your password.
+Name is the initial name display in Homekit, this you can change in the Home app later.
+Username is the email or a username (older carwings account) associated with your Nissan Carwings account.
+Password must be base64 string of your password. On linux you can do ```echo -n "mypassword"|base64```
 
-**Warning: Update Interval may spam your phone with charge notifications from the Nissan App.** You may want to turn these notifications off or set updateInterval to "never". This is currently experimental.
-
-Additionally you have the Homebridge options `accessory` (for the actual plugin) and `name` (for representation later).
+**NOTE: Put your configuration under platforms as shown below**
+Previous versions that this project forked from added carwings as an accessory.
 
 ### Example config.json
 
@@ -44,21 +60,24 @@ Additionally you have the Homebridge options `accessory` (for the actual plugin)
   },
   "description": "This is an example configuration file with carwings plugin.",
   "accessories": [
-    {
-      "accessory": "Carwings",
-      "name": "Leaf",
-      "email": "example@youremail.com",
-      "password": "TmljZVRyeSE=",
-      "region": "NE",
-      "updateInterval": "never"
-    }
   ],
   "platforms": [
+      {
+        "platform": "Carwings Platform",
+        "name": "Leaf",
+        "username": "example@youremail.com",
+        "password": "TmljZVRyeSE=",
+        "region": "NE",
+        "updateInterval": 0
+        "lowBattery": 26
+      }
   ]
 }
 ```
-Region options: NNA = USA [default], NE = Europe, NCI = Canada, NMA = Australia, NML = Japan.
-([source](https://github.com/jdhorne/pycarwings2/blob/master/pycarwings2/pycarwings2.py#L19-L23))
+
+## Login sessions and other Carwings apps.
+Since you will be using the same login credentials you use in other Apps, the logged in session in homebridge-carwings-platform will be invalidated when you do.
+The result will initially be "No Response" in HomeKit, but the invalidated session will be detected and homebridge-carwings-platform creates an new loggged in session.
 
 ## Screenshots
 
